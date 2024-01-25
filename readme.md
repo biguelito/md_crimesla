@@ -3,7 +3,7 @@ Intruções para windows.
 Para configuar o python:
 
 ```
-python -v venv venv
+python -m venv venv
 ```
 ```
 .\venv\Scripts\activate
