@@ -7,10 +7,10 @@ class MysqlConnector:
     
     def __init__(self) -> None:
         self.dw = mysql.connector.connect(
-            user=os.getenv('USER'), 
-            password=os.getenv('PASSWORD'),
-            host=os.getenv('HOST'),
-            database=os.getenv('DATABASE_DW')
+            user= 'root',#os.getenv('USER'), 
+            password= 'Trpq2597!',#os.getenv('PASSWORD'),
+            host= 'localhost', #os.getenv('HOST'),
+            database= 'dw_crimesla' #os.getenv('DATABASE_DW')
         )
 
     def obter_armas_por_tempo_aera(self, dataInicial, dataFinal, cidades):

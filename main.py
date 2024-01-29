@@ -1,3 +1,4 @@
+import os
 from dotenv import load_dotenv
 from sql.mysqlconnector import MysqlConnector
 import datetime
@@ -10,7 +11,6 @@ def armas_por_tempo_area(dataInicial, dataFinal, cidades):
     return
 
 def main():
-    load_dotenv('.env')
     dataInicial = datetime.date(2020, 1, 1)
     dataFinal = datetime.date(2023, 10, 30)
     cidades= [15, 6]

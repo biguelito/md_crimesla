@@ -1,19 +1,13 @@
+import pandas as pd
+import mysql.connector
 import streamlit as st
+from sqlalchemy import create_engine
 
-def build_header():
-    text ='''<h1>Header</h1>
-    <p>Exemplo de paragrafo no cabeçalho.</p>
-    '''
-    st.write(text, unsafe_allow_html=True)
+# Cria uma conexão com o banco de dados MySQL
+# engine = create_engine('mysql+mysqlconnector://root:password@localhost/dw_crimesla')
 
-def build_body():
-    text ='''
-    <h2>Body</h2>
-    <p>
-    Exemplo de paragrafo no corpo da página.
-    </P>
-    '''
-    st.write(text, unsafe_allow_html=True)
+# Carrega a query do arquivo SQL e executa a consulta SQL
+# query = pd.read_sql_query("sql/scripts/teste_armas_por_tempo_area.sql", engine)
 
-build_header()
-build_body()
+# Exibe os dados em uma tabela usando o Streamlit
+# st.dataframe(query)
