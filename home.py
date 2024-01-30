@@ -1,16 +1,4 @@
 import streamlit as st
-import os
-from dotenv import load_dotenv
-from sql.mysqlconnector import MysqlConnector
-import datetime
-
-def armas_por_tempo_area():
-    connector = MysqlConnector()
-    dataInicial = datetime.date(2020, 1, 1)
-    dataFinal = datetime.date(2023, 10, 30)
-    cidades= [15, 6]
-    return connector.obter_armas_por_tempo_aera(dataInicial, dataFinal, cidades)
-
 
 st.set_page_config(
     page_title = "M.D - CrimesLA - por Gabriel Reis e Washington Rocha",
@@ -38,4 +26,3 @@ st.markdown(f'''
     </ul>
 
 ''', unsafe_allow_html=True)
-st.write(armas_por_tempo_area())
