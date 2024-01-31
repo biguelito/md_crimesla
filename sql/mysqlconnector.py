@@ -8,7 +8,7 @@ class MysqlConnector:
     def __init__(self) -> None:
         self.dw = mysql.connector.connect(
             user= 'root',#os.getenv('USER'), 
-            password= 'Trpq2597!',#os.getenv('PASSWORD'),
+            password= 'Mysql@123',#os.getenv('PASSWORD'),
             host= 'localhost', #os.getenv('HOST'),
             database= 'dw_crimesla' #os.getenv('DATABASE_DW')
         )
@@ -30,4 +30,18 @@ class MysqlConnector:
         
         return resultado
     
+    def obter_listagem_areas(self):
+        resultado_dict = {}
+        file = open('sql/scripts/listagem_areas.sql', encoding='utf-8') 
+        script = file.read() 
+        file.close()
 
+        cursor = self.dw.cursor()
+        cursor.execute(script)    
+        resultado = list(map(list, cursor.fetchall()))
+        cursor.close()
+
+        for i in (range(len(resultado))):
+            resultado_dict[resultado[i][1]] = resultado[i][0]
+
+        return resultado_dict
