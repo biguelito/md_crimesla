@@ -41,7 +41,7 @@ class MysqlConnector:
         resultado = list(map(list, cursor.fetchall()))
         cursor.close()
 
-        resultado_dict['id'] = [i[0] for i in resultado]
-        resultado_dict['nome'] = [i[1] for i in resultado]
+        for i in (range(len(resultado))):
+            resultado_dict[resultado[i][1]] = resultado[i][0]
 
         return resultado_dict

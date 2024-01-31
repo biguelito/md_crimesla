@@ -5,9 +5,9 @@ import matplotlib.pyplot as plt
 from sql.mysqlconnector import MysqlConnector
 connector = MysqlConnector()
 
-def armas_por_tempo_area(sql, dataInicial, dataFinal, cidades):
-    areas_ids = [areas_selecionadas[i] for i in cidades]
-    return sql.obter_armas_por_tempo_aera(dataInicial, dataFinal, cidades)
+def armas_por_tempo_area(sql, dataInicial, dataFinal, areas_nome):
+    areas_id = [areas[i] for i in areas_nome]
+    return sql.obter_armas_por_tempo_aera(dataInicial, dataFinal, areas_id)
 
 def obter_listagem_areas(sql):
     return sql.obter_listagem_areas()
@@ -19,19 +19,19 @@ def processar_datas(data_inicio, data_fim):
 
 st.title("Armas por tempo e área")
 
+areas = obter_listagem_areas(connector)
 data_inicio = st.date_input("Selecione a data de início", pd.to_datetime('2022-01-01'))
 data_fim = st.date_input("Selecione a data de fim", pd.to_datetime('2022-12-31'))
 
-areas = obter_listagem_areas(connector)
-areas_selecionadas = st.multiselect(label="Selecione as áreas", options=areas["nome"])
+areas_selecionadas = st.multiselect(label="Selecione as áreas", options=areas.keys())
 
 #
 
 if st.button("Processar Dados"):
     # areas = " ".join(categorias_selecionadas)
-    st.write(f"Areas selecionadas: "+areas)
+    # st.write(f"Areas selecionadas: "+areas)
     processar_datas(data_inicio, data_fim)
-    armas_resultado = armas_por_tempo_area(connector, dataInicial=data_inicio,dataFinal=data_fim, cidades=areas_selecionadas)
+    armas_resultado = armas_por_tempo_area(connector, dataInicial=data_inicio,dataFinal=data_fim, areas_nome=areas_selecionadas)
     df = pd.DataFrame(armas_resultado, columns=["Tipo da arma","Quantidade"])
     # Ordenar o DataFrame pela coluna "Quantidade" em ordem decrescente
     df = df.sort_values(by="Quantidade", ascending=False)
