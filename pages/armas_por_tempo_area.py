@@ -2,9 +2,7 @@ import datetime
 import pandas as pd
 import mysql.connector
 import streamlit as st
-from sqlalchemy import create_engine
 import matplotlib.pyplot as plt
-
 from sql.mysqlconnector import MysqlConnector
 
 def armas_por_tempo_area(dataInicial, dataFinal):
