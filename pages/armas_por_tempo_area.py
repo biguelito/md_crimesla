@@ -1,19 +1,20 @@
-import datetime
 import pandas as pd
-import mysql.connector
 import streamlit as st
-from sqlalchemy import create_engine
 import matplotlib.pyplot as plt
 
 from sql.mysqlconnector import MysqlConnector
+connector = MysqlConnector()
 
-def armas_por_tempo_area(dataInicial, dataFinal):
-    connector = MysqlConnector()
-    cidades= [15, 6]
-    return connector.obter_armas_por_tempo_aera(dataInicial, dataFinal, cidades)
+def armas_por_tempo_area(sql, dataInicial, dataFinal, cidades):
+    areas_ids = [areas_selecionadas[i] for i in cidades]
+    return sql.obter_armas_por_tempo_aera(dataInicial, dataFinal, cidades)
+
+def obter_listagem_areas(sql):
+    return sql.obter_listagem_areas()
 
 def processar_datas(data_inicio, data_fim):
     st.write(f"Processando dados entre {data_inicio} e {data_fim}")
+    return
 
 
 st.title("Armas por tempo e área")
@@ -21,15 +22,17 @@ st.title("Armas por tempo e área")
 data_inicio = st.date_input("Selecione a data de início", pd.to_datetime('2022-01-01'))
 data_fim = st.date_input("Selecione a data de fim", pd.to_datetime('2022-12-31'))
 
-categorias_selecionadas = st.multiselect("Selecione as áreas", ["area1","area2","area3","area4"])
+areas = obter_listagem_areas(connector)
+areas_selecionadas = st.multiselect(label="Selecione as áreas", options=areas["nome"])
 
 #
 
 if st.button("Processar Dados"):
-    areas = " ".join(categorias_selecionadas)
+    # areas = " ".join(categorias_selecionadas)
     st.write(f"Areas selecionadas: "+areas)
     processar_datas(data_inicio, data_fim)
-    df = pd.DataFrame(armas_por_tempo_area(dataInicial=data_inicio,dataFinal=data_fim),columns=["Tipo da arma","Quantidade"])
+    armas_resultado = armas_por_tempo_area(connector, dataInicial=data_inicio,dataFinal=data_fim, cidades=areas_selecionadas)
+    df = pd.DataFrame(armas_resultado, columns=["Tipo da arma","Quantidade"])
     # Ordenar o DataFrame pela coluna "Quantidade" em ordem decrescente
     df = df.sort_values(by="Quantidade", ascending=False)
 
