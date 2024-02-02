@@ -8,8 +8,8 @@ class MysqlConnector:
     def __init__(self) -> None:
         self.dw = mysql.connector.connect(
             user= 'root',#os.getenv('USER'), 
-            password= 'Mysql@123',#os.getenv('PASSWORD'),
-            host= 'localhost', #os.getenv('HOST'),
+            password= 'DGh-AeFB2EbBff1Dg31DABaAfbHHb-Eh',#os.getenv('PASSWORD'),
+            host= 'monorail.proxy.rlwy.net', #os.getenv('HOST'),
             database= 'dw_crimesla' #os.getenv('DATABASE_DW')
         )
 
