@@ -31,6 +31,23 @@ class MysqlConnector:
         
         return resultado
     
+    def obter_tipo_crime_por_tempo_aera(self, dataInicial, dataFinal, cidades):
+        resultado = []
+        format_strings = ','.join(['%s'] * len(cidades))
+        params = [dataInicial, dataFinal] + cidades
+        
+        file = open('sql/scripts/tipo_crime_por_tempo_area.sql', encoding='utf-8') 
+        script = file.read() 
+        file.close()
+        script = script.replace('#areas#', format_strings)
+        
+        cursor = self.dw.cursor()
+        cursor.execute(script, params)    
+        resultado = list(map(list, cursor.fetchall()))
+        cursor.close()
+        
+        return resultado
+    
     def obter_listagem_areas(self):
         resultado_dict = {}
         file = open('sql/scripts/listagem_areas.sql', encoding='utf-8') 
