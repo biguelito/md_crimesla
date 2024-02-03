@@ -10,6 +10,7 @@ class MysqlConnector:
             user= 'root',#os.getenv('USER'), 
             password= 'DGh-AeFB2EbBff1Dg31DABaAfbHHb-Eh',#os.getenv('PASSWORD'),
             host= 'monorail.proxy.rlwy.net', #os.getenv('HOST'),
+            port='15218',
             database= 'dw_crimesla' #os.getenv('DATABASE_DW')
         )
 
