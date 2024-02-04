@@ -63,3 +63,18 @@ class MysqlConnector:
             resultado_dict[resultado[i][1]] = resultado[i][0]
 
         return resultado_dict
+    
+    def obter_local_perigoso_por_faixa_etaria(self, faixa_etaria):
+        resultado = []
+        
+        file = open('sql/scripts/local_perigoso_por_faixa_etaria.sql', encoding='utf-8') 
+        script = file.read() 
+        file.close()
+        params = [faixa_etaria] * 3
+
+        cursor = self.dw.cursor()
+        cursor.execute(script, params)    
+        resultado = list(map(list, cursor.fetchall()))
+        cursor.close()
+        
+        return resultado
