@@ -16,14 +16,20 @@ class MysqlConnector:
 
     def obter_armas_por_tempo_aera(self, dataInicial, dataFinal, cidades):
         resultado = []
-        format_strings = ','.join(['%s'] * len(cidades))
-        params = [dataInicial, dataFinal] + cidades
+        params = [dataInicial, dataFinal]
         
         file = open('sql/scripts/armas_por_tempo_area.sql', encoding='utf-8') 
         script = file.read() 
         file.close()
-        script = script.replace('#areas#', format_strings)
-        
+       
+        if (cidades == None):
+            script = script.replace('#usarareas#', '-- ')
+        else:
+            params += cidades
+            format_strings = ','.join(['%s'] * len(cidades))
+            script = script.replace('#areas#', format_strings)
+            script = script.replace('#usarareas#', '')
+
         cursor = self.dw.cursor()
         cursor.execute(script, params)    
         resultado = list(map(list, cursor.fetchall()))
