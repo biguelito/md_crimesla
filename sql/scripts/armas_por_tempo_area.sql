@@ -13,7 +13,7 @@ where 1=1
 	and %s <= dd.data_id -- data minima da procura
 	and dd.data_id <= %s -- data maxima da procura 
 	and dac.Arma_Usada_Cd <> 500 -- removendo arma desconhecida
-	and dlc.Area in (#areas#) -- lista de codigos de areas
+	#usarareas#and dlc.Area in (#areas#) -- lista de codigos de areas
 group by
 	dac.Id_Arma 
 	, dac.Arma_Desc 

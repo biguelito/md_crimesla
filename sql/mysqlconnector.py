@@ -16,10 +16,33 @@ class MysqlConnector:
 
     def obter_armas_por_tempo_aera(self, dataInicial, dataFinal, cidades):
         resultado = []
+        params = [dataInicial, dataFinal]
+        
+        file = open('sql/scripts/armas_por_tempo_area.sql', encoding='utf-8') 
+        script = file.read() 
+        file.close()
+       
+        if (cidades == None):
+            script = script.replace('#usarareas#', '-- ')
+        else:
+            params += cidades
+            format_strings = ','.join(['%s'] * len(cidades))
+            script = script.replace('#areas#', format_strings)
+            script = script.replace('#usarareas#', '')
+
+        cursor = self.dw.cursor()
+        cursor.execute(script, params)    
+        resultado = list(map(list, cursor.fetchall()))
+        cursor.close()
+        
+        return resultado
+    
+    def obter_tipo_crime_por_tempo_aera(self, dataInicial, dataFinal, cidades):
+        resultado = []
         format_strings = ','.join(['%s'] * len(cidades))
         params = [dataInicial, dataFinal] + cidades
         
-        file = open('sql/scripts/armas_por_tempo_area.sql', encoding='utf-8') 
+        file = open('sql/scripts/tipo_crime_por_tempo_area.sql', encoding='utf-8') 
         script = file.read() 
         file.close()
         script = script.replace('#areas#', format_strings)
@@ -46,3 +69,18 @@ class MysqlConnector:
             resultado_dict[resultado[i][1]] = resultado[i][0]
 
         return resultado_dict
+    
+    def obter_local_perigoso_por_faixa_etaria(self, faixa_etaria):
+        resultado = []
+        
+        file = open('sql/scripts/local_perigoso_por_faixa_etaria.sql', encoding='utf-8') 
+        script = file.read() 
+        file.close()
+        params = [faixa_etaria] * 3
+
+        cursor = self.dw.cursor()
+        cursor.execute(script, params)    
+        resultado = list(map(list, cursor.fetchall()))
+        cursor.close()
+        
+        return resultado
