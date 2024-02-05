@@ -16,22 +16,30 @@ if st.button("Processar Dados"):
     resultado = connector.obter_local_perigoso_por_faixa_etaria(faixa_selecionada)
     df = pd.DataFrame(resultado,columns=["Localidade","Quantidade"])
     top_10_df = df.head(10)
-    st.header("Tabela de Dados")
-    st.dataframe(df)
+    
     
     # Limitar o número de caracteres no eixo X
     max_chars = 25
-    top_10_df["Localidade"] = top_10_df["Localidade"].apply(lambda x: x[:max_chars] + "..." if len(x) > max_chars else x)
+    top_10_df.loc[:,"Localidade"] = top_10_df["Localidade"].apply(lambda x: x[:max_chars] + "..." if len(x) > max_chars else x)
     # Criar gráfico de barras
-    fig, ax = plt.subplots()
-    ax.bar(top_10_df["Localidade"], top_10_df["Quantidade"])
-    # Adicionar rótulos e título
-    ax.set_xlabel("Localidade")
-    ax.set_ylabel("Quantidade de Crimes")
-    ax.set_title("Quantidade de Crimes por Local")
-
-    # Exibir gráfico no Streamlit
-    plt.xticks(rotation=45, ha="right") 
-    st.pyplot(fig)
+    cor_roxa = '#8a2be2'  
+    plt.bar(top_10_df["Localidade"], top_10_df["Quantidade"], color=cor_roxa, edgecolor='black', linewidth=1.2)
     
+    # Adicionar rótulos e título com tamanhos de fonte maiores
+    plt.xlabel('Localidade', fontsize=8)
+    plt.ylabel('Quantidade', fontsize=14)
+    plt.title('Quantidade por locais', fontsize=16)
+    # Adicionar grade
+    plt.grid(True, axis='y', linestyle='--', alpha=0.7)
+    
+    # Ajustar o layout para evitar cortar rótulos
+    plt.tight_layout()
+    # Exibir gráfico no Streamlit
+    st.header("Os dez locais de crime mais recorrentes")
+    plt.xticks(rotation=45, ha="right") 
+    st.pyplot(plt)
+    
+    # Dados resultantes ordenados
+    st.header("Locais de crime ordenados pela quantidade de crimes")
+    st.dataframe(df)
   

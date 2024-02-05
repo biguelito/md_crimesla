@@ -1,3 +1,4 @@
+from matplotlib import cm
 import pandas as pd
 import streamlit as st
 import matplotlib.pyplot as plt
@@ -41,19 +42,18 @@ if st.button("Processar Dados"):
         top_10_df = df.head(10)
 
         # Layout em duas colunas
-        col1, col2 = st.columns(2)
-
-        # Exibir o DataFrame na coluna 1
-        with col1:
-            st.header("Tabela de Dados")
-            st.dataframe(df)
-
-        # Gráfico de barras na coluna 2
-        with col2:
-            st.header("Top 10 tipos de crime mais recorrentes")
-            fig, ax = plt.subplots()
-            ax.bar(top_10_df["Tipo do Crime"], top_10_df["Quantidade"])
-            plt.xticks(rotation=45, ha="right")  
-            st.pyplot(fig)
-    
-  
+        
+        st.header("Os dez tipos de crime mais recorrentes")
+        # Gráfico em pizza
+        # Criar um gráfico de pizza com cores automáticas
+        cores = cm.tab10.colors[:len(top_10_df["Tipo do Crime"])]  # Use a paleta de cores 'tab10'
+        # Configurar as propriedades do texto (aumentar o tamanho da fonte)
+        textprops = {'fontsize': 18, 'color':'white'}
+        plt.figure(figsize=(20, 20), facecolor='none', edgecolor='none')
+        plt.pie(top_10_df["Quantidade"], labels=top_10_df["Tipo do Crime"], colors=cores,
+        autopct='%1.1f%%', startangle=140,textprops=textprops)
+        # Ajustar o layout para evitar cortar rótulos
+        plt.tight_layout()
+        st.pyplot(plt)
+        st.header("Tipos de crimes ordenados pela quantidade")
+        st.dataframe(df)
